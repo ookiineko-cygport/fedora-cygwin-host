@@ -1,0 +1,25 @@
+#!/bin/bash
+echo 'Running scripts installer'
+
+INST_DIR=/tmp/fch_i/1
+HOME=/home/fedora
+
+rm -fv $0
+echo "$0: Entering directory ${INST_DIR}"
+pushd $INST_DIR > /dev/null
+GIT_IGNORE_FILES="$(find -type f -name .gitignore -printf '%P\n')"
+if [ ! -z "$GIT_IGNORE_FILES" ]; then
+	for GIT_IGNORE_FILE in "$GIT_IGNORE_FILES"; do
+		rm -fv $GIT_IGNORE_FILE
+	done
+fi
+
+mkdir -v $HOME/.bin $HOME/.cache
+cp -avf `find -maxdepth 1 ! -path . -printf '%P\n'` $HOME/.bin
+pushd $HOME/.bin > /dev/null
+find -maxdepth 1 ! -path . -type d -printf '%P\n' | xargs -r chmod 775 -v
+find -maxdepth 1 -type f -printf '%P\n' | xargs -r chmod a+x -v
+popd > /dev/null
+
+popd > /dev/null
+echo "$0: Installation completed"

@@ -1,0 +1,29 @@
+#!/bin/bash
+echo 'Running configs installer'
+
+INST_DIR=/tmp/fch_i/0
+HOME=/home/fedora
+
+rm -fv $0
+echo "$0: Entering directory ${INST_DIR}"
+pushd $INST_DIR > /dev/null
+GIT_IGNORE_FILES="$(find -type f -name .gitignore -printf '%P\n')"
+if [ ! -z "$GIT_IGNORE_FILES" ]; then
+	for GIT_IGNORE_FILE in "$GIT_IGNORE_FILES"; do
+		rm -fv $GIT_IGNORE_FILE
+	done
+fi
+
+mv -fv gitignore gitignore_global
+find -maxdepth 1 ! -path . -printf '%P\n' | xargs -l -I '{}' mv -fv '{}' "${HOME}/.{}"
+
+if [ -d $HOME/.ssh ]; then
+	chmod 700 -v $HOME/.ssh
+	pushd $HOME/.ssh > /dev/null
+	[[ -f id_rsa ]] && chmod 600 -v id_rsa
+	[[ ! -z "$(find -type f -name \*.pub -printf '%P\n')" ]] && chmod 644 -v *.pub
+	popd > /dev/null
+fi
+
+popd > /dev/null
+echo "$0: Installation completed"

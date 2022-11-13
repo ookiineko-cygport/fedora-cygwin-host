@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# distro specific
+. ~/.bashrc
+
+function @clean_system_log@() {
+	sudo journalctl --vacuum-time=1m --vacuum-size=1G
+}
+
+function @ensure_ssh_agent@() {
+	source ~/.bin/ensure-ssh-agent
+}
+
+export GPG_TTY=$(tty)
+export PATH=$HOME/.bin:$PATH
+
+eval `dircolors`
+alias ls='ls --color'
+alias grep='grep --color'
+
+echo -e 'Welcome come back! You may need to:\n@ensure_ssh_agent@'

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo 'Running post-install script'
+
+# system environment variables
+echo 'container=docker' >> /etc/environment
+echo 'LC_ALL=C' >> /etc/environment
+echo 'LANG="C.UTF-8"' >> /etc/environment
+
+cat /tmp/fch_i/4 >> /etc/environment
+cp /tmp/fch_i/4 /etc/profile.d/proxy.sh
+chmod +x /etc/profile.d/proxy.sh
+
+cp -avf /etc/environment /etc/environment.original
+
+systemctl disable sshd
