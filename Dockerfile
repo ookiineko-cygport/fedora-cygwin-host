@@ -27,7 +27,7 @@ RUN source /tmp/fch_i/4 && \
                    openssh-clients ninja-build openssl-devel pkgconf-pkg-config libcurl-devel libssh2-devel xz-devel zlib-devel libffi-devel cmake \
                    libzstd-devel libxml2-devel chrpath python3-setuptools cygwin64 cygwin64-binutils cygwin64-cpp cygwin64-default-manifest \
                    cygwin64-filesystem cygwin64-gcc cygwin64-gcc-c++ cygwin64-gettext cygwin64-gettext-static cygwin64-libbfd cygwin64-libiconv \
-                   cygwin64-libiconv-static cygwin64-libltdl cygwin64-libtool cygwin64-ncurses cygwin64-pkg-config cygwin64-w32api-headers \
+                   cygwin64-libiconv-static cygwin64-libltdl cygwin64-libtool cygwin64-ncurses cygwin64-pkg-config cygwin64-w32api-headers cygport \
                    cygwin64-w32api-runtime cygwin64-zlib cygwin64-zlib-static && \
     echo 'Post install' && \
     sed -i -re 's/^account\s+required\s+pam_nologin\.so//g' /etc/pam.d/login && \
