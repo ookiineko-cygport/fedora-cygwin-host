@@ -25,6 +25,7 @@ RUN source /tmp/fch_i/4 && \
     dnf install -y ncurses python3-pip python2.7 netcat curl unzip rsync gnupg2 psmisc procps-ng wget zip nano tmux ncdu p7zip unrar neofetch texinfo \
                    tar cpio gzip htop iputils bash-completion net-tools passwd less mandoc man-pages file bind-utils tmate openssh-server git-core \
                    openssh-clients ninja-build openssl-devel pkgconf-pkg-config libcurl-devel libssh2-devel xz-devel zlib-devel libffi-devel cmake \
+                   gengetopt \
                    libzstd-devel libxml2-devel chrpath python3-setuptools cygwin64 cygwin64-binutils cygwin64-cpp cygwin64-default-manifest hostname \
                    cygwin64-filesystem cygwin64-gcc cygwin64-gcc-c++ cygwin64-gettext cygwin64-gettext-static cygwin64-libbfd cygwin64-libiconv \
                    cygwin64-libiconv-static cygwin64-libltdl cygwin64-libtool cygwin64-ncurses cygwin64-pkg-config cygwin64-w32api-headers cygport \
