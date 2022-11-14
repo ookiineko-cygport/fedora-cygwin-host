@@ -1,4 +1,4 @@
-FROM robertdebock/fedora:35
+FROM robertdebock/fedora:rawhide
 MAINTAINER Ookiineko <chiisaineko@protonmail.com>
 ENV container docker
 ENV LC_ALL C
