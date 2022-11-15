@@ -9,6 +9,7 @@ ADD scripts /tmp/fch_i/1
 COPY preinst /tmp/fch_i/2
 COPY postinst /tmp/fch_i/3
 COPY proxies /tmp/fch_i/4
+ADD extras /tmp/fch_i/5
 RUN source /tmp/fch_i/4 && \
     bash /tmp/fch_i/2 && \
     echo 'Updating DNF cache' && \

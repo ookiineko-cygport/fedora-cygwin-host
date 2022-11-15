@@ -13,4 +13,8 @@ chmod +x /etc/profile.d/proxy.sh
 
 cp -avf /etc/environment /etc/environment.original
 
+echo 'Installing extra sysroot for rust build'
+
+tar -v -C /usr/x86_64-pc-cygwin/sys-root -x -f /tmp/fch_i/5/sysroot-rust-build.tgz
+
 systemctl disable sshd
