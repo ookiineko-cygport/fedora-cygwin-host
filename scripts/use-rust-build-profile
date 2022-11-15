@@ -1,0 +1,189 @@
+echo 'Welcome to Fedora Cygwin Host!'
+
+# based on https://git.alpinelinux.org/aports/tree/community/rust/APKBUILD
+
+echo '**Info**: Cross-compile profile included.'
+
+export RUST_TARGET_PATH=$HOME/.rust_targets
+
+echo '**Info**: Loaded build options.'
+
+export OPENSSL_NO_VENDOR=1
+export RUST_BACKTRACE=1
+
+echo '**Info**: Optimization not enabled.'
+
+#echo 'Optimization enabled.'
+#export CFLAGS="-O2"
+#export CXXFLAGS="-O2"
+
+echo '**Info**: Loaded build functions.'
+
+_target=x86_64-pc-cygwin
+_host=$_target
+_build=x86_64-unknown-linux-gnu
+
+export CROSS_COMPILE="${_host}-"
+
+echo '**Info**: Workaround Git priv key.'
+
+export CARGO_NET_GIT_FETCH_WITH_CLI=true
+
+function __config_cygwin_rust_build() {
+	echo '==> Configure.'
+	./configure \
+		--build="$_build" \
+		--host="$_target" \
+		--target="$_target" \
+		--prefix="/usr" \
+		--release-channel="nightly" \
+		--disable-docs \
+		--enable-extended \
+		--tools="analysis,cargo,clippy,src,rustfmt" \
+		--enable-option-checking \
+		--enable-locked-deps \
+		--enable-profiler \
+		--dist-compression-formats=gz \
+		--python="python3" \
+		--set="rust.codegen-units=1" \
+		--set="rust.codegen-units-std=1" \
+		--set="rust.parallel-compiler=false" \
+		--set="rust.deny-warnings=false" \
+		--set="target.$_target.crt-static=false" \
+		--set="target.$_target.cc=${CROSS_COMPILE}gcc" \
+		--set="target.$_target.cxx=${CROSS_COMPILE}c++" \
+		--set="target.$_target.ar=${CROSS_COMPILE}ar" \
+		--set="target.$_target.linker=${CROSS_COMPILE}gcc" \
+		--set="target.$_build.crt-static=false" \
+		--set="target.$_build.cc=gcc" \
+		--set="target.$_build.cxx=c++" \
+		--set="target.$_build.ar=ar" \
+		--set="target.$_build.linker=gcc" \
+		--set="llvm.targets=X86" \
+		--set="llvm.experimental-targets="
+}
+
+# custom functions
+
+__cygwin_sroot=/usr/"$_target"/sys-root/usr
+__cygwin_inc_d="$__cygwin_sroot"/include
+__cyggcc_v=11
+__cyggcc_dir=/usr/lib/gcc/"$_target"/"$__cyggcc_v"
+__cyggcc_inc="$__cyggcc_dir"/include
+__mnt_wkspc=/mnt/workspace
+__rust_bdir="$__mnt_wkspc"/rust
+__libc_bdir="$__mnt_wkspc"/libc
+
+alias __nyan_comm='nyan -t swapoff'
+alias __cyggcc="${CROSS_COMPILE}gcc"
+alias __build_script='python3 ./x.py'
+
+function __clean_cygwin_rust_build() {
+	echo '==> Clean.'
+	rm -f config.toml Makefile
+	rm -rf build
+}
+
+function __do_cygwin_rust_build() {
+	echo '==> Build.'
+	__build_script build -i
+}
+
+function __enter_cygwin_rust_build() {
+	echo '--> Rust.'
+	cd $__rust_bdir
+}
+
+function __enter_rust_libc_build() {
+	echo '--> Libc.'
+	cd $__libc_bdir
+}
+
+function __std_rust_build() {
+	echo '==> STD.'
+	# skip stage0
+	__build_script build -i --stage 1 --keep-stage 0 --keep-stage-std 0 library/std
+}
+
+function __go_search_cygwin_header() {
+	if [ ! "$#" -eq 5 ]; then
+		echo '**Info**: Usage: __go_search_cygwin_header <header> <keyword> <preprocessor switch> <before> <after>'
+		return
+	fi
+	for include_file in "${__cygwin_inc_d}/${1}" "${__cyggcc_inc}/${1}"; do
+		if [ -f "$include_file" ]; then
+			echo '**Info**: Reading file: ' $include_file
+			if [ "$3" = "0" -o "$3" = "n" ]; then
+				grep "$2" $include_file -B $4 -A $5 | __nyan_comm -l c
+			else
+				__cyggcc $include_file -E | grep "$2" -B $4 -A $5 | __nyan_comm -l c
+			fi
+		else
+			echo '***Warning***: Cannot find: ' $include_file
+		fi
+	done
+}
+
+function __find_cygwin_header_defs() {
+	if [ ! "$#" -eq 4 ]; then
+		echo '**Info**: Usage: __find_cygwin_header_defs <keyword> <identitifer type> <before> <after>'
+		return
+	fi
+	if [ "$2" = "d" -o "$2" = "t" ]; then
+		grep -rnE "#define\\s+${1}\\s+|typedef\\s+[a-zA-Z_].*\\s+${1}" $__cygwin_inc_d $__cyggcc_inc -B $3 -A $4 | __grep_filter | __nyan_comm -l c
+	elif [ "$2" = "s" ]; then
+		grep -rnE "struct\\s+${1}" $__cygwin_inc_d $__cyggcc_inc -B $3 -A $4 | __grep_filter | __nyan_comm -l c
+	elif [ "$2" = "f" ]; then
+		grep -rnE "[a-zA-Z_].*\\s+${1}\\s*\\(" $__cygwin_inc_d $__cyggcc_inc -B $3 -A $4 | __grep_filter | __nyan_comm -l c
+	else
+		echo '*Error*: Unknown type:' $2
+		return
+	fi
+}
+
+function __view_cygwin_header() {
+	if [ ! "$#" -eq 1 ]; then
+		echo '**Info**: Usage: __view_cygwin_header <header>'
+		return
+	fi
+	for include_file in "${__cygwin_inc_d}/${1}" "${__cyggcc_inc}/${1}"; do
+		if [ -f "$include_file" ]; then
+			echo -ne "**Question**: Open file '${include_file}'? [y/N]"
+			read yesn
+			if [ "$yesn" = "y" -o "$yesn" = "Y" ]; then
+				nano -v "$include_file"
+			fi
+		else
+			echo '***Warning***: Cannot find: ' $include_file
+		fi
+	done
+}
+
+function __resolve_cygwin_macro() {
+	if [ ! "$#" -eq 3 ]; then
+		echo '**Info**: Usage: __resolve_cygwin_macro <header> <macro name> <tail lines>'
+		return
+	fi
+	__tmpf=$(mktemp --suffix=.c)
+	echo "**Info**: Tempfile is ${__tmpf}"
+	echo -e "#include <${1}>\ntypedef void* __resolve_cygwin_macro;\n${2}" > $__tmpf
+	__cyggcc $__tmpf -E | tail -n "$3" | __nyan_comm -l c
+	rm -fv $__tmpf
+}
+
+function __search_rust_code() {
+	if [ ! "$#" -eq 5 ]; then
+		echo '**Info**: Usage: __search_rust_code <path> <keyword> <identitifer type> <before> <after>'
+		return
+	fi
+	if [ "$3" = "t" ]; then
+		grep -rnE "pub\\s+type\\s+${2}\\s*=" $1 -B $4 -A $5 | __grep_filter | __nyan_comm -l rust
+	elif [ "$3" = "s" ]; then
+		grep -rnE "struct\\s+${2}\\s*{" $1 -B $4 -A $5 | __grep_filter | __nyan_comm -l rust
+	elif [ "$3" = "f" ]; then
+		grep -rnE "fn\\s+${2}.*\\(" $1 -B $4 -A $5 | __grep_filter | __nyan_comm -l rust
+	else
+		echo '*Error*: Unknown type:' $3
+		return
+	fi
+}

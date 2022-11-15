@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+
+from sys import stdin
+from re import compile as re_comp
+
+pat = re_comp(r'(.+)-(\d+)-(.*)')
+pfx = '/usr/x86_64-pc-cygwin/sys-root/usr/'
+gcc = '/usr/lib/gcc/x86_64-pc-cygwin/11/'
+pfxs = [pfx, gcc]
+
+for line in stdin.readlines():
+	if line == '--\n':
+		print('// ---')
+		continue
+	mat = pat.findall(line)
+	if len(mat) == 1:
+		file, lineno, code = mat[0]
+		for x in pfxs:
+			if file.startswith(x):
+				file = file[len(x):]
+		pad = len(f'{file}:{lineno}') * ' '
+		print(f'/* {pad} */ {code}')
+		continue
+	elif line.count(':') < 2:
+		raise TypeError(f'Cannot handle line: \'{line[:-1]}\'!')
+	pos = line.find(':', line.find(':') + 1)
+	code = line[pos + 1:]
+	info = line[:pos]
+	for x in pfxs:
+		if info.startswith(x):
+			info = info[len(x):]
+	print(f'/* {info} */ {code[:-1]}')

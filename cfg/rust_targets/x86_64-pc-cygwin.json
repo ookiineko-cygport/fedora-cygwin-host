@@ -1,0 +1,137 @@
+{
+  "abi-return-struct-as-int": true,
+  "allows-weak-linkage": false,
+  "arch": "x86_64",
+  "cpu": "x86-64",
+  "data-layout": "e-m:w-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128",
+  "debuginfo-kind": "pdb",
+  "dll-prefix": "",
+  "dll-suffix": ".dll",
+  "dynamic-linking": true,
+  "eh-frame-header": false,
+  "emit-debug-gdb-scripts": false,
+  "exe-suffix": ".exe",
+  "function-sections": false,
+  "is-like-windows": true,
+  "late-link-args": {
+    "gcc": [
+      "-lcygwin",
+      "-lgcc",
+      "-lcygwin",
+      "-luser32",
+      "-lkernel32"
+    ],
+    "ld": [
+      "-lcygwin",
+      "-lgcc",
+      "-lcygwin",
+      "-luser32",
+      "-lkernel32"
+    ],
+    "ld.lld": [
+      "-lcygwin",
+      "-lgcc",
+      "-lcygwin",
+      "-luser32",
+      "-lkernel32"
+    ]
+  },
+  "late-link-args-dynamic": {
+    "gcc": [
+      "-lgcc_s"
+    ],
+    "ld": [
+      "-lgcc_s"
+    ],
+    "ld.lld": [
+      "-lgcc_s"
+    ]
+  },
+  "late-link-args-static": {
+    "gcc": [
+      "-lgcc_eh",
+      "-l:libpthread.a"
+    ],
+    "ld": [
+      "-lgcc_eh",
+      "-l:libpthread.a"
+    ],
+    "ld.lld": [
+      "-lgcc_eh",
+      "-l:libpthread.a"
+    ]
+  },
+  "linker": "x86_64-pc-cygwin-gcc",
+  "llvm-target": "x86_64-pc-cygwin",
+  "max-atomic-width": 64,
+  "os": "cygwin",
+  "post-link-objects": {
+    "dynamic-dylib": [
+      "rsend.o"
+    ],
+    "dynamic-nopic-exe": [
+      "rsend.o"
+    ],
+    "dynamic-pic-exe": [
+      "rsend.o"
+    ],
+    "static-dylib": [
+      "rsend.o"
+    ],
+    "static-nopic-exe": [
+      "rsend.o"
+    ],
+    "static-pic-exe": [
+      "rsend.o"
+    ]
+  },
+  "pre-link-args": {
+    "gcc": [
+      "-fno-use-linker-plugin",
+      "-Wl,--dynamicbase",
+      "-Wl,--disable-auto-image-base",
+      "-m64",
+      "-Wl,--high-entropy-va"
+    ],
+    "ld": [
+      "--dynamicbase",
+      "--disable-auto-image-base",
+      "-m",
+      "i386pep",
+      "--high-entropy-va"
+    ],
+    "ld.lld": [
+      "--dynamicbase",
+      "--disable-auto-image-base",
+      "-m",
+      "i386pep",
+      "--high-entropy-va"
+    ]
+  },
+  "pre-link-objects": {
+    "dynamic-dylib": [
+      "rsbegin.o"
+    ],
+    "dynamic-nopic-exe": [
+      "rsbegin.o"
+    ],
+    "dynamic-pic-exe": [
+      "rsbegin.o"
+    ],
+    "static-dylib": [
+      "rsbegin.o"
+    ],
+    "static-nopic-exe": [
+      "rsbegin.o"
+    ],
+    "static-pic-exe": [
+      "rsbegin.o"
+    ]
+  },
+  "requires-uwtable": true,
+  "target-family": [
+    "unix"
+  ],
+  "target-pointer-width": "64",
+  "vendor": "pc"
+}

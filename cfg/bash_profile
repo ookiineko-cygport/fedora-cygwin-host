@@ -11,6 +11,10 @@ function @ensure_ssh_agent@() {
 	source ~/.bin/ensure-ssh-agent
 }
 
+function @use_rust_build_profile@() {
+	source ~/.bin/use-rust-build-profile
+}
+
 export GPG_TTY=$(tty)
 export PATH=$HOME/.bin:$PATH
 
@@ -18,4 +22,4 @@ eval `dircolors`
 alias ls='ls --color'
 alias grep='grep --color'
 
-echo -e 'Welcome come back! You may need to:\n@ensure_ssh_agent@'
+echo -e 'Welcome come back! You may need to:\n@ensure_ssh_agent@\n@use_rust_build_profile@'
