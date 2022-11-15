@@ -113,10 +113,10 @@ function __go_search_cygwin_header() {
 	for include_file in "${__cygwin_inc_d}/${1}" "${__cyggcc_inc}/${1}"; do
 		if [ -f "$include_file" ]; then
 			echo '**Info**: Reading file: ' $include_file
-			if [ "$3" = "0" -o "$3" = "n" ]; then
-				grep "$2" $include_file -B $4 -A $5 | __nyan_comm -l c
-			else
+			if [ "$3" = "1" -o "$3" = "y" ]; then
 				__cyggcc $include_file -E | grep "$2" -B $4 -A $5 | __nyan_comm -l c
+			else
+				grep "$2" $include_file -B $4 -A $5 | __nyan_comm -l c
 			fi
 		else
 			echo '***Warning***: Cannot find: ' $include_file
@@ -129,12 +129,12 @@ function __find_cygwin_header_defs() {
 		echo '**Info**: Usage: __find_cygwin_header_defs <keyword> <identitifer type> <before> <after>'
 		return
 	fi
-	if [ "$2" = "td"]; then
-		grep -rnE "#define\\s+${1}\\s+|typedef\\s+[a-zA-Z_].*\\s+${1}" $__cygwin_inc_d $__cyggcc_inc -B $3 -A $4 | __grep_filter | __nyan_comm -l c
+	if [ "$2" = "td" ]; then
+		grep -rnE "#define\\s+${1}\\s+|typedef\\s+[a-zA-Z_][^ ]*\\s+${1}" $__cygwin_inc_d $__cyggcc_inc -B $3 -A $4 | __grep_filter | __nyan_comm -l c
 	elif [ "$2" = "s" ]; then
 		grep -rnE "struct\\s+${1}" $__cygwin_inc_d $__cyggcc_inc -B $3 -A $4 | __grep_filter | __nyan_comm -l c
 	elif [ "$2" = "f" ]; then
-		grep -rnE "[a-zA-Z_].*\\s+${1}\\s*\\(" $__cygwin_inc_d $__cyggcc_inc -B $3 -A $4 | __grep_filter | __nyan_comm -l c
+		grep -rnE "[a-zA-Z_][^ ]*\\s+${1}\\s*\\(" $__cygwin_inc_d $__cyggcc_inc -B $3 -A $4 | __grep_filter | __nyan_comm -l c
 	else
 		echo '*Error*: Unknown type:' $2
 		return
@@ -179,7 +179,7 @@ function __search_rust_code() {
 	if [ "$3" = "t" ]; then
 		grep -rnE "type\\s+${2}\\s*=" $1 -B $4 -A $5 | __grep_filter | __nyan_comm -l rust
 	elif [ "$3" = "c" ]; then
-		 grep -rnE "const\\s+${2}:\\s*[a-zA-Z_].*\\s*=" $1 -B $4 -A $5 | __grep_filter | __nyan_comm -l rust
+		 grep -rnE "const\\s+${2}:\\s*[a-zA-Z_][^ ]*\\s*=" $1 -B $4 -A $5 | __grep_filter | __nyan_comm -l rust
 	elif [ "$3" = "s" ]; then
 		grep -rnE "struct\\s+${2}\\s*{" $1 -B $4 -A $5 | __grep_filter | __nyan_comm -l rust
 	elif [ "$3" = "f" ]; then
