@@ -25,4 +25,10 @@ tar -C /usr/local/bin -x -f /tmp/nyan.tgz nyan
 
 chmod +x /usr/local/bin/nyan
 
+echo 'Setting mirror for pip'
+
+python3 -m pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+
+su fedora -c 'HOME=/home/fedora python3 -m pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple'
+
 systemctl disable sshd
