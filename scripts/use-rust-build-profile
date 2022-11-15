@@ -129,7 +129,7 @@ function __find_cygwin_header_defs() {
 		echo '**Info**: Usage: __find_cygwin_header_defs <keyword> <identitifer type> <before> <after>'
 		return
 	fi
-	if [ "$2" = "d" -o "$2" = "t" ]; then
+	if [ "$2" = "td"]; then
 		grep -rnE "#define\\s+${1}\\s+|typedef\\s+[a-zA-Z_].*\\s+${1}" $__cygwin_inc_d $__cyggcc_inc -B $3 -A $4 | __grep_filter | __nyan_comm -l c
 	elif [ "$2" = "s" ]; then
 		grep -rnE "struct\\s+${1}" $__cygwin_inc_d $__cyggcc_inc -B $3 -A $4 | __grep_filter | __nyan_comm -l c
@@ -177,7 +177,9 @@ function __search_rust_code() {
 		return
 	fi
 	if [ "$3" = "t" ]; then
-		grep -rnE "pub\\s+type\\s+${2}\\s*=" $1 -B $4 -A $5 | __grep_filter | __nyan_comm -l rust
+		grep -rnE "type\\s+${2}\\s*=" $1 -B $4 -A $5 | __grep_filter | __nyan_comm -l rust
+	elif [ "$3" = "c" ]; then
+		 grep -rnE "const\\s+${2}:\\s*[a-zA-Z_].*\\s*=" $1 -B $4 -A $5 | __grep_filter | __nyan_comm -l rust
 	elif [ "$3" = "s" ]; then
 		grep -rnE "struct\\s+${2}\\s*{" $1 -B $4 -A $5 | __grep_filter | __nyan_comm -l rust
 	elif [ "$3" = "f" ]; then
