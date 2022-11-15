@@ -17,4 +17,12 @@ echo 'Installing extra sysroot for rust build'
 
 tar -v -C /usr/x86_64-pc-cygwin/sys-root -x -f /tmp/fch_i/5/sysroot-rust-build.tgz
 
+echo 'Installing toshimaru/nyan'
+
+wget https://ghproxy.com/https://github.com/toshimaru/nyan/releases/latest/download/nyan_Linux_x86_64.tar.gz -O /tmp/nyan.tgz
+
+tar -C /usr/local/bin -x -f /tmp/nyan.tgz nyan
+
+chmod +x /usr/local/bin/nyan
+
 systemctl disable sshd
