@@ -182,6 +182,8 @@ function __search_rust_code() {
 		grep -rnE "struct\\s+${2}\\s*{" $1 -B $4 -A $5 | __grep_filter | __nyan_comm -l rust
 	elif [ "$3" = "f" ]; then
 		grep -rnE "fn\\s+${2}.*\\(" $1 -B $4 -A $5 | __grep_filter | __nyan_comm -l rust
+	elif [ "$3" = "e" ]; then
+		grep -rnE "enum\\s+${2}\\s*{" $1 -B $4 -A $5 | __grep_filter | __nyan_comm -l rust
 	else
 		echo '*Error*: Unknown type:' $3
 		return
