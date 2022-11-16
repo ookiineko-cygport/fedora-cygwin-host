@@ -130,7 +130,7 @@ function __find_cygwin_header_defs() {
 		return
 	fi
 	if [ "$2" = "td" ]; then
-		grep -rnE "#define\\s+${1}\\s+|typedef\\s+[a-zA-Z_][^ ]*\\s+${1}" $__cygwin_inc_d $__cyggcc_inc -B $3 -A $4 | __grep_filter | __nyan_comm -l c
+		grep -rnE "#define\\s+${1}\\s+|typedef\\s+[a-zA-Z_].*\\s+${1}" $__cygwin_inc_d $__cyggcc_inc -B $3 -A $4 | __grep_filter | __nyan_comm -l c
 	elif [ "$2" = "s" ]; then
 		grep -rnE "struct\\s+${1}" $__cygwin_inc_d $__cyggcc_inc -B $3 -A $4 | __grep_filter | __nyan_comm -l c
 	elif [ "$2" = "f" ]; then
