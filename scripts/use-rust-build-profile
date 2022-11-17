@@ -179,7 +179,7 @@ function __search_rust_code() {
 	if [ "$3" = "t" ]; then
 		grep -rnE "type\\s+${2}\\s*=" $1 -B $4 -A $5 | __grep_filter | __nyan_comm -l rust
 	elif [ "$3" = "c" ]; then
-		 grep -rnE "const\\s+${2}:\\s*[a-zA-Z_][^ ]*\\s*=" $1 -B $4 -A $5 | __grep_filter | __nyan_comm -l rust
+		 grep -rnE "const\\s+${2}:\\s*[^ ]+\\s*=" $1 -B $4 -A $5 | __grep_filter | __nyan_comm -l rust
 	elif [ "$3" = "s" ]; then
 		grep -rnE "struct\\s+${2}\\s*{" $1 -B $4 -A $5 | __grep_filter | __nyan_comm -l rust
 	elif [ "$3" = "f" ]; then
