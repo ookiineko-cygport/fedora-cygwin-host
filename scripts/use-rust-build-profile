@@ -20,8 +20,8 @@ echo '**Info**: Optimization not enabled.'
 echo '**Info**: Loaded build functions.'
 
 _target=x86_64-pc-cygwin
-_host=$_target
 _build=x86_64-unknown-linux-gnu
+_host=$_build
 
 export CROSS_COMPILE="${_host}-"
 
@@ -33,7 +33,7 @@ function __config_cygwin_rust_build() {
 	echo '==> Configure.'
 	./configure \
 		--build="$_build" \
-		--host="$_target" \
+		--host="$_host" \
 		--target="$_target" \
 		--prefix="/usr" \
 		--release-channel="nightly" \
