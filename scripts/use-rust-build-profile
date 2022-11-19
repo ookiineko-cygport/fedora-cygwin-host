@@ -23,7 +23,8 @@ _target=x86_64-pc-cygwin
 _build=x86_64-unknown-linux-gnu
 _host=$_build
 
-export CROSS_COMPILE="${_host}-"
+export CROSS_COMPILE="${_target}-"
+HOST_COMPILE=""
 
 echo '**Info**: Workaround Git priv key.'
 
@@ -59,6 +60,11 @@ function __config_cygwin_rust_build() {
 		--set="target.$_build.cxx=c++" \
 		--set="target.$_build.ar=ar" \
 		--set="target.$_build.linker=gcc" \
+		--set="target.$_host.crt-static=false" \
+		--set="target.$_host.cc=${HOST_COMPILE}gcc" \
+		--set="target.$_host.cxx=${HOST_COMPILE}c++" \
+		--set="target.$_host.ar=${HOST_COMPILE}ar" \
+		--set="target.$_host.linker=${HOST_COMPILE}gcc" \
 		--set="llvm.targets=X86" \
 		--set="llvm.experimental-targets="
 }
