@@ -88,24 +88,24 @@
   "pre-link-args": {
     "gcc": [
       "-fno-use-linker-plugin",
-      "-Wl,--dynamicbase",
+      "-Wl,--disable-dynamicbase",
       "-Wl,--disable-auto-image-base",
       "-m64",
-      "-Wl,--high-entropy-va"
+      "-Wl,--disable-high-entropy-va"
     ],
     "ld": [
-      "--dynamicbase",
+      "--disable-dynamicbase",
       "--disable-auto-image-base",
       "-m",
       "i386pep",
-      "--high-entropy-va"
+      "--disable-high-entropy-va"
     ],
     "ld.lld": [
-      "--dynamicbase",
+      "--disable-dynamicbase",
       "--disable-auto-image-base",
       "-m",
       "i386pep",
-      "--high-entropy-va"
+      "--disable-high-entropy-va"
     ]
   },
   "pre-link-objects": {
