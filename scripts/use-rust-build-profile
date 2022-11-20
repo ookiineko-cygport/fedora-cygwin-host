@@ -35,7 +35,7 @@ function __config_cygwin_rust_build() {
 	./configure \
 		--build="$_build" \
 		--host="$_host" \
-		--target="$_target" \
+		--target="$_target,$_build" \
 		--prefix="/usr" \
 		--release-channel="nightly" \
 		--disable-docs \
