@@ -21,3 +21,5 @@ services:
       - ALL
     stdin_open: true
     tty: true
+    cgroup_parent: docker.slice
+    cgroup: private

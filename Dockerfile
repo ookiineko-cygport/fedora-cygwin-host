@@ -9,7 +9,6 @@ ADD scripts /tmp/fch_i/1
 COPY preinst /tmp/fch_i/2
 COPY postinst /tmp/fch_i/3
 COPY proxies /tmp/fch_i/4
-ADD extras /tmp/fch_i/5
 RUN source /tmp/fch_i/4 && \
     bash /tmp/fch_i/2 && \
     echo 'Updating DNF cache' && \
@@ -17,11 +16,9 @@ RUN source /tmp/fch_i/4 && \
     echo 'Installing ca-certiticates and DNF plugins' && \
     dnf install -y ca-certificates dnf-plugins-core && \
     echo 'Adding Cygwin repo' && \
-    dnf copr enable -y yselkowitz/cygwin && \
+    dnf copr enable -y yselkowitz/cygwin fedora-rawhide-x86_64 && \
     echo 'Doing system upgrade' && \
     dnf upgrade -y && \
-    echo 'Installing build dpes' && \
-    dnf group install -y "C Development Tools and Libraries" && \
     echo 'Installing packages' && \
     dnf install -y ncurses python3-pip python2.7 netcat curl unzip rsync gnupg2 psmisc procps-ng wget zip nano tmux ncdu p7zip unrar neofetch texinfo \
                    tar cpio gzip htop iputils bash-completion net-tools passwd less mandoc man-pages file bind-utils tmate openssh-server git-core \

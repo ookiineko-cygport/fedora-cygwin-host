@@ -73,13 +73,13 @@
 	insteadOf = ssh://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-next
 	insteadOf = git@git.kernel.org:pub/scm/linux/kernel/git/stable/linux-next
 [http]
-	postBuffer = 2000000000
-	proxy = socks5://10.0.0.209:56252
+#	postBuffer = 2000000000
+	proxy = socks5://10.0.0.150:7890
 [https]
-	postBuffer = 2000000000
-	proxy = socks5://10.0.0.209:56252
-[git]
-	postBuffer = 2000000000
+#	postBuffer = 2000000000
+	proxy = socks5://10.0.0.150:7890
+#[git]
+#	postBuffer = 2000000000
 #[commit]
 #	gpgsign = true
 [gpg]
