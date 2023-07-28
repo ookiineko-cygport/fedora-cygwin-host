@@ -1,0 +1,1 @@
+gcc gcc-c++ cmake ninja-build zlib-devel libffi-devel ncurses-devel python3-psutil python3-sphinx python3-recommonmark libedit-devel python3-devel python3-setuptools gnupg2 libxml2-devel perl-generators libatomic libstdc++-devel
